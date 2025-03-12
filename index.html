@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology Survey</title>
+    <!-- Enhanced styling with modern libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add theme support -->
+    <meta name="theme-color" content="#2196f3">
+</head>
+<body>
+    <div class="theme-toggle">
+        <button id="theme-switch" aria-label="Toggle dark mode">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <header class="animate__animated animate__fadeInDown">
+            <div class="logo">
+                <i class="fas fa-poll-h"></i>
+            </div>
+            <h1>Technology Survey</h1>
+            <p class="tagline">Test your knowledge of modern technology</p>
+        </header>
+        
+        <div id="user-info" class="section active animate__animated animate__fadeIn">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-user-circle"></i>
+                    <h2>Personal Information</h2>
+                </div>
+                <p class="section-description">Please provide your personal details before proceeding to the survey.</p>
+                
+                <form id="info-form" class="modern-form">
+                    <div class="form-group">
+                        <label for="fullname">Full Name:</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="error-message" id="fullname-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthdate">Date of Birth:</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                            <input type="date" id="birthdate" name="birthdate" required>
+                        </div>
+                        <div class="error-message" id="birthdate-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cccd">ID Number:</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-id-card"></i>
+                            <input type="text" id="cccd" name="cccd" placeholder="Enter your 12-digit ID number" 
+                                pattern="[0-9]{12}" title="ID Number must be 12 digits" required>
+                        </div>
+                        <div class="error-message" id="cccd-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Permanent Address:</label>
+                        <div class="input-with-icon textarea-container">
+                            <i class="fas fa-home"></i>
+                            <textarea id="address" name="address" rows="3" placeholder="Enter your permanent address" required></textarea>
+                        </div>
+                        <div class="error-message" id="address-error"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-gradient"><i class="fas fa-arrow-right"></i> Continue</button>
+                </form>
+            </div>
+        </div>
+        
+        <div id="survey-section" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h2>Survey Questions</h2>
+                </div>
+                
+                <div class="timer-container">
+                    <div class="timer">
+                        <i class="fas fa-clock"></i>
+                        <span id="timer-display">00:00:00</span>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-stats">
+                        <span id="progress-percentage">0%</span>
+                        <span id="question-counter">Question 1/40</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
+                    </div>
+                </div>
+                
+                <div class="question-navigation">
+                    <button id="toggle-nav" class="btn btn-outline"><i class="fas fa-list-ol"></i> Question Navigator</button>
+                    <div id="nav-panel" class="hidden animate__animated animate__fadeIn">
+                        <div class="nav-header">
+                            <h4>Question Navigator</h4>
+                            <div class="nav-legend">
+                                <span><span class="legend-box current"></span> Current</span>
+                                <span><span class="legend-box answered"></span> Answered</span>
+                                <span><span class="legend-box flagged"></span> Flagged</span>
+                            </div>
+                            <button id="close-nav" class="close-btn"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="question-groups">
+                            <div class="question-group">
+                                <h5><i class="fas fa-check-circle"></i> True/False</h5>
+                                <div class="question-buttons" id="group-1-buttons"></div>
+                            </div>
+                            <div class="question-group">
+                                <h5><i class="fas fa-list-ul"></i> Single Choice</h5>
+                                <div class="question-buttons" id="group-2-buttons"></div>
+                            </div>
+                            <div class="question-group">
+                                <h5><i class="fas fa-check-square"></i> Multiple Choice</h5>
+                                <div class="question-buttons" id="group-3-buttons"></div>
+                            </div>
+                            <div class="question-group">
+                                <h5><i class="fas fa-pen"></i> Open-ended</h5>
+                                <div class="question-buttons" id="group-4-buttons"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="survey-form">
+                    <div id="survey-questions"></div>
+                    
+                    <div class="buttons">
+                        <button type="button" id="flag-btn" class="btn btn-outline" title="Flag question for review"><i class="far fa-flag"></i> Flag Question</button>
+                        <div class="nav-buttons">
+                            <button type="button" id="prev-btn" class="btn btn-secondary" disabled><i class="fas fa-chevron-left"></i> Previous</button>
+                            <button type="button" id="next-btn" class="btn btn-primary">Next <i class="fas fa-chevron-right"></i></button>
+                            <button type="submit" id="submit-btn" class="btn btn-success" style="display: none;">Submit <i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div id="results-section" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-pie"></i>
+                    <h2>Survey Results</h2>
+                </div>
+                
+                <div id="score-chart-container" class="chart-container">
+                    <canvas id="score-chart"></canvas>
+                </div>
+                
+                <div class="user-summary">
+                    <h3><i class="fas fa-id-card"></i> Personal Information</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <p class="info-label">Full Name:</p>
+                            <p class="info-value" id="result-name"></p>
+                        </div>
+                        <div class="info-item">
+                            <p class="info-label">Date of Birth:</p>
+                            <p class="info-value" id="result-birthdate"></p>
+                        </div>
+                        <div class="info-item">
+                            <p class="info-label">ID Number:</p>
+                            <p class="info-value" id="result-cccd"></p>
+                        </div>
+                        <div class="info-item">
+                            <p class="info-label">Address:</p>
+                            <p class="info-value" id="result-address"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="survey-results">
+                    <h3><i class="fas fa-list-check"></i> Response Summary</h3>
+                    <div id="results-container"></div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button id="download-pdf" class="btn btn-outline"><i class="fas fa-file-pdf"></i> Download Results (PDF)</button>
+                    <button id="restart-btn" class="btn btn-primary"><i class="fas fa-redo"></i> Restart Survey</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 Technology Survey. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Add modern libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <!-- Add this debugging message with enhanced visibility -->
+    <div id="loading-message" style="position:fixed; bottom:10px; right:10px; background-color:#2196f3; color:white; padding:15px; border-radius:5px; z-index:9999; font-weight:bold;">
+        Loading survey questions...
+    </div>
+
+    <!-- Add troubleshooting script -->
+    <script>
+        // Debug info
+        document.getElementById('loading-message').textContent = "Checking page elements...";
+        
+        // Check if all key elements exist
+        window.addEventListener('DOMContentLoaded', function() {
+            console.clear(); // Clear console
+            console.log("Page loaded, checking elements...");
+            
+            const elementIds = [
+                'user-info', 'survey-section', 'results-section',
+                'info-form', 'survey-form', 'survey-questions',
+                'prev-btn', 'next-btn', 'submit-btn'
+            ];
+            
+            let missingElements = [];
+            
+            elementIds.forEach(id => {
+                const element = document.getElementById(id);
+                if (!element) {
+                    missingElements.push(id);
+                    console.error(`Missing element: ${id}`);
+                } else {
+                    console.log(`Found element: ${id}`);
+                }
+            });
+            
+            if (missingElements.length > 0) {
+                document.getElementById('loading-message').textContent = 
+                    `Error: Missing elements: ${missingElements.join(', ')}`;
+            } else {
+                document.getElementById('loading-message').textContent = "All elements found. Ready!";
+                setTimeout(() => {
+                    document.getElementById('loading-message').style.display = 'none';
+                }, 3000);
+            }
+            
+            // Add event listener to debug form submission
+            const infoForm = document.getElementById('info-form');
+            if (infoForm) {
+                console.log("Adding debug listener to form");
+                infoForm.addEventListener('submit', function(e) {
+                    console.log("Form submitted via debug listener");
+                    document.getElementById('loading-message').textContent = "Form submitted...";
+                    document.getElementById('loading-message').style.display = 'block';
+                    
+                    // Show transition after a short delay
+                    setTimeout(() => {
+                        document.getElementById('loading-message').textContent = "Transitioning to survey...";
+                        
+                        // Force transition if needed (backup)
+                        setTimeout(() => {
+                            const userInfo = document.getElementById('user-info');
+                            const survey = document.getElementById('survey-section');
+                            
+                            if (userInfo && survey && userInfo.classList.contains('active') && !survey.classList.contains('active')) {
+                                console.log("Forcing transition via debug script");
+                                document.getElementById('loading-message').textContent = "Forcing transition...";
+                                
+                                userInfo.style.display = 'none';
+                                userInfo.classList.remove('active');
+                                
+                                survey.style.display = 'block';
+                                survey.classList.add('active');
+                                
+                                // Let the real script initialize
+                                document.getElementById('loading-message').textContent = "Transition complete!";
+                                setTimeout(() => {
+                                    document.getElementById('loading-message').style.display = 'none';
+                                }, 2000);
+                            }
+                        }, 1000);
+                    }, 500);
+                });
+            }
+        });
+        
+        // Check for script loading errors
+        window.addEventListener('error', function(e) {
+            if (e.target.tagName === 'SCRIPT') {
+                document.getElementById('loading-message').textContent = 'Error loading script. Check console.';
+                document.getElementById('loading-message').style.display = 'block';
+                document.getElementById('loading-message').style.backgroundColor = '#f44336';
+            }
+        }, true);
+    </script>
+    
+    <!-- Main script with fixes -->
+    <script src="script.js"></script>
+    
+    <!-- Additional debugging and fix scripts -->
+    <script src="debug.js"></script>
+    <script src="fix-survey.js"></script>
+    
+    <!-- Emergency fix button (hidden in production) -->
+    <div id="emergency-fix" style="position: fixed; bottom: 50px; right: 10px; z-index: 9999; display: none;">
+        <button onclick="forceShowSurvey()" style="padding: 10px; background: red; color: white; border: none;">
+            Show Survey (Emergency)
+        </button>
+    </div>
+
+    <script>
+        // Show emergency button after 5 seconds if still on first page
+        setTimeout(function() {
+            const userInfo = document.getElementById('user-info');
+            if (userInfo && userInfo.classList.contains('active')) {
+                document.getElementById('emergency-fix').style.display = 'block';
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
